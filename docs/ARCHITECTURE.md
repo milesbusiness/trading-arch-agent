@@ -97,6 +97,7 @@ await Task.WhenAll(adrTask, costTask);
 ```
 
 Total wall time ≈ Stage1 + Stage2 + Stage3 ≈ 20s + 30s + 25s = ~75s
+
 vs sequential ≈ 20s + 30s + 25s + 20s + 25s = ~120s
 
 ---
@@ -119,3 +120,30 @@ architecture-package.zip
 ```
 
 Decode with: `[System.Convert]::FromBase64String($response.zipBase64) | Set-Content -Path package.zip -Encoding Byte`
+
+---
+
+## References
+
+### Semantic Kernel (Multi-Agent)
+- [Semantic Kernel — Agent Framework docs](https://learn.microsoft.com/en-us/semantic-kernel/frameworks/agent/)
+- [SK Agents — Process Framework (orchestration)](https://learn.microsoft.com/en-us/semantic-kernel/frameworks/process/process-framework)
+- [YouTube: Building multi-agent AI systems with Semantic Kernel (Microsoft Build 2024, 45 min)](https://www.youtube.com/watch?v=mCx12kLtnX4)
+
+### Architecture Decision Records
+- [Michael Nygard — Documenting Architecture Decisions (original post)](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
+- [ADR GitHub organisation — templates and examples](https://adr.github.io/)
+- [YouTube: Architecture Decision Records explained (ArjanCodes, 15 min)](https://www.youtube.com/watch?v=4MvFrkgGPgU)
+
+### C4 Model
+- [C4 Model official site — Simon Brown](https://c4model.com/)
+- [YouTube: The C4 model for software architecture (Simon Brown, NDC, 1h)](https://www.youtube.com/watch?v=x2-rSnhpw0g)
+
+### Regulatory Reference
+- [EMIR full text (EUR-Lex)](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32012R0648)
+- [BAIT — BaFin IT supervisory requirements (German)](https://www.bafin.de/SharedDocs/Veroeffentlichungen/DE/Rundschreiben/2021/rs_10_2021_BAIT.html)
+- [DORA full text (EUR-Lex)](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2554)
+
+### Azure Cost Estimation
+- [Azure Pricing Calculator](https://azure.microsoft.com/en-us/pricing/calculator/)
+- [Azure West Europe — region pricing overview](https://azure.microsoft.com/en-us/explore/global-infrastructure/geographies/#geographies)
