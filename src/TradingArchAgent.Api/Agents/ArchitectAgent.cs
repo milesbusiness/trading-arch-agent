@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 using TradingArchAgent.Api.Models;
 
 namespace TradingArchAgent.Api.Agents;
@@ -53,15 +54,14 @@ public class ArchitectAgent(Kernel kernel, ILogger<ArchitectAgent> logger)
         history.AddSystemMessage(SystemPrompt);
         history.AddUserMessage(BuildUserMessage(requirements));
 
-        var settings = new PromptExecutionSettings
+#pragma warning disable SKEXP0010
+        var settings = new OpenAIPromptExecutionSettings
         {
-            ExtensionData = new Dictionary<string, object>
-            {
-                ["temperature"] = 0.3,
-                ["max_tokens"]  = 4096,
-                ["response_format"] = new { type = "json_object" }
-            }
+            Temperature    = 0.3,
+            MaxTokens      = 4096,
+            ResponseFormat = "json_object"
         };
+#pragma warning restore SKEXP0010
 
         var response = await chat.GetChatMessageContentAsync(history, settings, kernel, ct);
         var json = response.Content ?? "{}";

@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 using TradingArchAgent.Api.Models;
 
 namespace TradingArchAgent.Api.Agents;
@@ -44,15 +45,14 @@ public class RequirementAgent(Kernel kernel, ILogger<RequirementAgent> logger)
         history.AddSystemMessage(SystemPrompt);
         history.AddUserMessage($"Requirement: {requirement}");
 
-        var settings = new PromptExecutionSettings
+#pragma warning disable SKEXP0010
+        var settings = new OpenAIPromptExecutionSettings
         {
-            ExtensionData = new Dictionary<string, object>
-            {
-                ["temperature"] = 0.2,
-                ["max_tokens"]  = 2048,
-                ["response_format"] = new { type = "json_object" }
-            }
+            Temperature    = 0.2,
+            MaxTokens      = 2048,
+            ResponseFormat = "json_object"
         };
+#pragma warning restore SKEXP0010
 
         var response = await chat.GetChatMessageContentAsync(history, settings, kernel, ct);
         var json = response.Content ?? "{}";

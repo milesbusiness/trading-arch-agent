@@ -1,4 +1,5 @@
 using Microsoft.SemanticKernel;
+using Scalar.AspNetCore;
 using TradingArchAgent.Api.Agents;
 using TradingArchAgent.Api.Models;
 using TradingArchAgent.Api.Orchestration;
@@ -21,19 +22,23 @@ builder.Services.AddSingleton<AdrAgent>();
 builder.Services.AddSingleton<CostAgent>();
 builder.Services.AddSingleton<AgentOrchestrator>();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-    c.SwaggerDoc("v1", new()
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((doc, ctx, ct) =>
     {
-        Title       = "Trading Architecture Assistant",
-        Version     = "v1",
-        Description = "Multi-agent system that generates complete architecture packages for trading systems. Orchestrates 5 AI agents: Requirement → (Architect ‖ Risk) → (ADR ‖ Cost)"
-    }));
+        doc.Info = new() {
+            Title       = "Trading Architecture Assistant",
+            Version     = "v1",
+            Description = "Multi-agent system that generates complete architecture packages for trading systems. Orchestrates 5 AI agents: Requirement → (Architect ‖ Risk) → (ADR ‖ Cost)"
+        };
+        return Task.CompletedTask;
+    });
+});
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Trading Architecture Assistant v1"));
+app.MapOpenApi();
+app.MapScalarApiReference();
 
 app.MapPost("/api/architecture", async (ArchitectureRequest request, AgentOrchestrator orchestrator) =>
 {
